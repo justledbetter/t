@@ -37,6 +37,8 @@ func main() {
    tr.SetGlob()
 
    log.Println(t.T("Some string in English"))
+   tr.SetLocale("en-UK")
+   log.Println(t.T("Some string in English"))
 }
 ```
 
@@ -65,10 +67,13 @@ i18n/en-UK.go:
 $ go generate
 $ go run
 Some string in English
+Some string in colourful English
 $ LANG=es go run
 Some string in Spanish :)
+Some string in colourful English
 ```
 
 ## TODO
 * Initialization is fairly UNIX-centric right now, need to port the locale detection function to Windows.
+* Locale names need to be harmonized with i18n standards, it's a little bit fast and loose right now.
 * Improve the tscan utility to be able to ingest existing JSON files and add newly-discovered strings (defaulting to ./lang/C.json)
