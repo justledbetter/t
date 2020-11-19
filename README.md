@@ -54,12 +54,19 @@ i18n/es.go:
 }
 ```
 
+i18n/en-UK.go:
+```
+{
+"Some string in English": "Some string in colourful English"
+}
+```
+
 ```
 $ go generate
 $ go run
 Some string in English
 $ LANG=es go run
-Some string in Spanish
+Some string in Spanish :)
 ```
 
 ## TODO
