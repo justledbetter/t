@@ -95,3 +95,5 @@ Some string in colourful English
 * Initialization is fairly UNIX-centric right now, need to port the locale detection function to Windows.
 * Locale names need to be harmonized with i18n standards, it's a little bit fast and loose right now.
 * Improve the tscan utility to be able to ingest existing JSON files and add newly-discovered strings (defaulting to ./lang/C.json)
+* Add the ability to have static translations loaded from in-application structs, if necessary.
+* Add the ability to import the package with a name other than "t" (and still pick up strings with tscan).
