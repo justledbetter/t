@@ -21,6 +21,16 @@ not come in the future.
 * ...?
 * Profit!
 
+By default, the application initializes using the UNIX LANG environment variable (pending update).
+The application can call `t.SetLocale()` to manually override this, if necessary. We (will try to)
+follow common i18n fallback rules to determine the closest reasonable translation, so calling
+`t.SetLocale("es_MX.UTF-8")` will search for translations in the following order:
+
+* es_MX.UTF-8
+* es_MX
+* es
+* C
+
 ## Simplest Example:
 
 main.go:
