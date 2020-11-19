@@ -32,14 +32,14 @@ func main() {
 }
 ```
 
-/i18n/C.go:
+18n/C.go:
 ```
 {
 "Some string in English": "Some string in English"
 }
 ```
 
-/i18n/es.go:
+i18n/es.go:
 ```
 {
 "Some string in English": "Some string in Spanish :)"
