@@ -55,9 +55,11 @@ func main() {
 Find strings (pending improvement):
 ```
 $ go run github.com/justledbetter/t/cmd/tscan
-{
-"Some string in English": "Some string in English"
-}
+Translations updated in ./i18n/C.json
+$ cp ./i18n/C.json ./i18n/es.json
+$ cp ./i18n/C.json ./i18n/en_UK.json
+$ vi ./i18n/es.json ## (and customize)
+$ vi ./i18n/en_UK.json ## (and customize)
 ```
 
 i18n/C.go:
