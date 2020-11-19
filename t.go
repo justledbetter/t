@@ -72,14 +72,11 @@ func (t *tdata) fallback(in string) string {
 	}
 
 	if _, ok := t.tbl[in]; !ok {
-		if strings.Contains(in, "_") {
-			in = strings.ReplaceAll(in, "_", "-")
-		}
 		if strings.Contains(in, ".") {
 			return t.fallback(strings.Split(in, ".")[0])
 		}
-		if strings.Contains(in, "-") {
-			return t.fallback(strings.Split(in, "-")[0])
+		if strings.Contains(in, "_") {
+			return t.fallback(strings.Split(in, "_")[0])
 		}
 
 		return "C"
