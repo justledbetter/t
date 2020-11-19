@@ -44,7 +44,7 @@ import (
 
 func main() {
    tr := t.Init(pkger.Dir("/i18n"))
-   tr.SetGlob()
+   tr.SetGlobal()
 
    log.Println(t.T("Some string in English"))
    tr.SetLocale("en_UK")

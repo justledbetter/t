@@ -5,6 +5,13 @@ import (
 )
 
 func TestT(test *testing.T) {
+
+	// Confirm the t.T function acts as a no-op if the translation system is not yet loaded.
+	if T("not loaded yet") != "not loaded yet" {
+		test.Fatalf("String mismatch: not loaded yet")
+	}
+
+	// Initialize the translation system into a local object named "t"
 	t := Init("/i18n")
 
 	if t.T("hello") != "hello" {
@@ -28,16 +35,16 @@ func TestT(test *testing.T) {
 		test.Fatalf("String mismatch: hola got %v", t.T("hello"))
 	}
 
-	s = t.SetLocale("en-UK")
-	if s != "en-UK" {
-		test.Fatalf("Failed loading translation: en-UK got %v", s)
+	s = t.SetLocale("en_UK")
+	if s != "en_UK" {
+		test.Fatalf("Failed loading translation: en_UK got %v", s)
 	}
 
 	if t.T("com.testing.error35") != "Something improper has occurred" {
 		test.Fatalf("String mismatch: error35 es")
 	}
 
-	s = t.SetLocale("en-AU")
+	s = t.SetLocale("en_AU")
 	if s != "en" {
 		test.Fatalf("Failed loading translation: en got %v", s)
 	}

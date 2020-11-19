@@ -62,7 +62,7 @@ func Init(d pkger.Dir) tdata {
 	return ret
 }
 
-func (t *tdata) SetGlob() {
+func (t *tdata) SetGlobal() {
 	glob = t
 }
 
@@ -96,7 +96,7 @@ func (t *tdata) locale() string {
 }
 
 func SetLocale(in string) string {
-	if glob != nil {
+	if glob == nil {
 		return in
 	}
 
