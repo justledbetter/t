@@ -53,3 +53,7 @@ Some string in English
 $ LANG=es go run
 Some string in Spanish
 ```
+
+## TODO
+* Initialization is fairly UNIX-centric right now, need to port the locale detection function to Windows.
+* Improve the tscan utility to be able to ingest existing JSON files and add newly-discovered strings (defaulting to ./lang/C.json)
