@@ -32,7 +32,7 @@ func main() {
 }
 ```
 
-18n/C.go:
+i18n/C.go:
 ```
 {
 "Some string in English": "Some string in English"
