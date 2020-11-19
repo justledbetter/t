@@ -100,3 +100,4 @@ Some string in colourful English
 * Add the ability to have static translations loaded from in-application structs, if necessary.
 * Add the ability to import the package with a name other than "t" (and still pick up strings with tscan).
 * Allow the user to customize the behavior of the tscan utility.
+* Allow for per-session translations (if a web request is in a specific locale, translate for that instead of for system-default)
