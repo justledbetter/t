@@ -63,21 +63,21 @@ $ vi ./i18n/es.json ## (and customize)
 $ vi ./i18n/en_UK.json ## (and customize)
 ```
 
-i18n/C.go:
+i18n/C.json:
 ```
 {
 "Some string in English": "Some string in English"
 }
 ```
 
-i18n/es.go:
+i18n/es.json:
 ```
 {
 "Some string in English": "Some string in Spanish :)"
 }
 ```
 
-i18n/en_UK.go:
+i18n/en_UK.json:
 ```
 {
 "Some string in English": "Some string in colourful English"
