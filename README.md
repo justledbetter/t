@@ -1,11 +1,11 @@
 t: The Trivially Translatable Thing
 ===================================
 
-This package provides a very simple way to load and use embedded translations from within your
-Golang software. The goal is to provide, at the application level, a way to package all
-translation files within the application itself, so the application is capable of running in
-any locale without requiring the user to unpack or manage any external files. Note that
-no consideration has been given whatsoever to module-level translations: This package assumes
+A very simple way to load and use embedded translations from within your Golang software.
+The goal is to provide, at the application level, a way to package all translation files
+within the application itself, so the application is capable of running in any locale
+without requiring the user to unpack or manage any external files. Note that no
+consideration has been given whatsoever to module-level translations: This package assumes
 all translatable strings will exist in files underneath your current directory, included
 and built into a single set of translation files. More modular design may or may not come
 in the future.
