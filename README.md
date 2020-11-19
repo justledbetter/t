@@ -47,7 +47,7 @@ func main() {
    tr.SetGlob()
 
    log.Println(t.T("Some string in English"))
-   tr.SetLocale("en-UK")
+   tr.SetLocale("en_UK")
    log.Println(t.T("Some string in English"))
 }
 ```
@@ -74,7 +74,7 @@ i18n/es.go:
 }
 ```
 
-i18n/en-UK.go:
+i18n/en_UK.go:
 ```
 {
 "Some string in English": "Some string in colourful English"
