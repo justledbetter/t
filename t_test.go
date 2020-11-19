@@ -2,6 +2,7 @@ package t
 
 import (
 	"testing"
+	"net/http"
 )
 
 func TestT(test *testing.T) {
@@ -58,5 +59,11 @@ func TestT(test *testing.T) {
 
 	if t.T("com.testing.error35") != "An error has occurred" {
 		test.Fatalf("String mismatch: error35 en")
+	}
+
+	r, _ := http.NewRequest("GET","http://localhost",nil)
+	r.Header.Add("Accept-Language", "en-us; en")
+	if t.R(r, "com.testing.error35") != "An error has occurred" {
+		test.Fatalf("String mismatch: error35 http en %v", t.R(r, "com.testing.error35"))
 	}
 }

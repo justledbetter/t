@@ -11,6 +11,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"net/http"
 )
 
 type trans map[string]string
@@ -95,6 +96,25 @@ func (t *tdata) locale() string {
 	return t.lastLocale
 }
 
+func (t *tdata) localeFromRequest( r *http.Request ) string {
+	if len(r.Header) < 1 {
+		return "C"
+	}
+
+	if len(r.Header.Get("Accept-Language")) < 1 {
+		return "C"
+	}
+
+	for _, s := range strings.Split(r.Header.Get("Accept-Language"),";") {
+		// TODO: Grossly inefficient and potentially wasteful and not RFC 7231 compliant
+		if t.fallback(strings.TrimSpace(s)) != "C" {
+			return t.fallback(strings.TrimSpace(s))
+		}
+	}
+
+	return "C"
+}
+
 func SetLocale(in string) string {
 	if glob == nil {
 		return in
@@ -125,4 +145,20 @@ func T(in string) string {
 	}
 
 	return in
+}
+
+func R(r *http.Request, in string) string {
+	if glob != nil {
+		return glob.R(r, in)
+	}
+
+	return in
+}
+
+func (t *tdata) R(r *http.Request, in string) string {
+	l := t.localeFromRequest(r)
+	if _, ok := t.tbl[l][in]; !ok {
+		return in
+	}
+	return t.tbl[l][in]
 }
