@@ -52,6 +52,14 @@ func main() {
 }
 ```
 
+Find strings (pending improvement):
+```
+$ go run github.com/justledbetter/t
+{
+"Some string in English": "Some string in English"
+}
+```
+
 i18n/C.go:
 ```
 {
