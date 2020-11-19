@@ -54,7 +54,7 @@ func main() {
 
 Find strings (pending improvement):
 ```
-$ go run github.com/justledbetter/t
+$ go run github.com/justledbetter/t/cmd/tscan
 {
 "Some string in English": "Some string in English"
 }
