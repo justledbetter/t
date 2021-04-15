@@ -39,11 +39,13 @@ package main
 
 import (
    "github.com/justledbetter/t"
-   "github.com/markbates/pkger"
 )
 
+//go:embed i18n
+var embedded_i18n embed.FS
+
 func main() {
-   tr := t.Init(pkger.Dir("/i18n"))
+   tr := t.Init(embedded_i18n)
    tr.SetGlobal()
 
    log.Println(t.T("Some string in English"))

@@ -3,7 +3,11 @@ package t
 import (
 	"testing"
 	"net/http"
+	"embed"
 )
+
+//go:embed i18n
+var i18n embed.FS
 
 func TestT(test *testing.T) {
 
@@ -13,7 +17,7 @@ func TestT(test *testing.T) {
 	}
 
 	// Initialize the translation system into a local object named "t" (largely for compatibility purpose)
-	t := Init("/i18n")
+	t := Init(i18n)
 
 	// Set this object as the global translator.
 	t.SetGlobal()

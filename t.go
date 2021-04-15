@@ -5,8 +5,8 @@ package t
 
 import (
 	"encoding/json"
-	"github.com/markbates/pkger"
-	"io/ioutil"
+	"io"
+	"io/fs"
 	"log"
 	"os"
 	"regexp"
@@ -28,28 +28,35 @@ type tdata struct {
 
 var glob *tdata
 
-func Init(d pkger.Dir) tdata {
+func Init(d fs.FS) tdata {
 	ret := tdata{
 		lastLocale: "C",
 	}
 	ret.tbl = make(map[string]trans)
-	err := pkger.Walk("/i18n", func(path string, info os.FileInfo, _ error) error {
+	err := fs.WalkDir(d, ".", func(path string, info fs.DirEntry, _ error) error {
+		if info.IsDir() {
+			return nil
+		}
+
 		if !strings.HasSuffix(path, ".json") {
 			return nil
 		}
 
-		f, _ := pkger.Open(path)
+		f, e := d.Open(path)
+		if e != nil {
+			return e
+		}
 		defer f.Close()
 
-		sl, _ := ioutil.ReadAll(f)
+		sl, _ := io.ReadAll(f)
 		var tr trans
-		e := json.Unmarshal(sl, &tr)
+		e = json.Unmarshal(sl, &tr)
 		if e != nil {
 			return e
 		}
 
 		path = string(regexp.MustCompile("^.*:").ReplaceAll([]byte(path), []byte("")))
-		path = strings.ReplaceAll(path, "/i18n/", "")
+		path = strings.ReplaceAll(path, "i18n/", "")
 		path = strings.ReplaceAll(path, ".json", "")
 
 		ret.tbl[path] = tr
