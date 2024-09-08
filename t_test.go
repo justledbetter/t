@@ -1,9 +1,10 @@
 package t
 
 import (
-	"testing"
-	"net/http"
+	"context"
 	"embed"
+	"net/http"
+	"testing"
 )
 
 //go:embed i18n
@@ -65,9 +66,15 @@ func TestT(test *testing.T) {
 		test.Fatalf("String mismatch: error35 en")
 	}
 
-	r, _ := http.NewRequest("GET","http://localhost",nil)
+	r, _ := http.NewRequest("GET", "http://localhost", nil)
 	r.Header.Add("Accept-Language", "en-us; en")
 	if t.R(r, "com.testing.error35") != "An error has occurred" {
 		test.Fatalf("String mismatch: error35 http en %v", t.R(r, "com.testing.error35"))
+	}
+
+	ctx := context.Background()
+	ctx = ContextForLocale(ctx, "cn_ZH")
+	if t.C(ctx, "Welcome to the Fun Party!") != "欢迎参加趣味派对！" {
+		test.Fatalf("String mismatch: Welcome to the Fun Party! cn %v", t.C(ctx, "Welcome to the Fun Party!"))
 	}
 }

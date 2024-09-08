@@ -15,7 +15,9 @@ func main() {
 	log.SetFlags(0)
 
 	// Default package name is t.T.
-	r := regexp.MustCompile("t\\.T\\(\"([^\"]*?)\"\\)")
+	t := regexp.MustCompile("t\\.T\\(\"([^\"]*?)\"\\)")
+	r := regexp.MustCompile("t\\.R\\([^)]*\"([^\"]*?)\"\\)")
+	c := regexp.MustCompile("t\\.C\\([^)]*\"([^\"]*?)\"\\)")
 
 	out := make(map[string]string)
 
@@ -45,10 +47,12 @@ func main() {
 			return e
 		}
 		// Change to reader
-		bi := r.FindAllStringSubmatch(string(sl), -1)
-		for _, i := range bi {
-			if _, ok := out[i[1]]; !ok {
-				out[i[1]] = i[1]
+		for _, r := range []*regexp.Regexp{t, r, c} {
+			bi := r.FindAllStringSubmatch(string(sl), -1)
+			for _, i := range bi {
+				if _, ok := out[i[1]]; !ok {
+					out[i[1]] = i[1]
+				}
 			}
 		}
 		return nil
@@ -57,7 +61,7 @@ func main() {
 		log.Fatal(e)
 	}
 
-	if f, e := os.OpenFile("./i18n/C.json",os.O_WRONLY|os.O_TRUNC|os.O_CREATE,0644); e == nil {
+	if f, e := os.OpenFile("./i18n/C.json", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0644); e == nil {
 		defer f.Close()
 		m, _ := json.MarshalIndent(out, "", "\t")
 		f.Write(m)

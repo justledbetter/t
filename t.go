@@ -4,14 +4,15 @@
 package t
 
 import (
+	"context"
 	"encoding/json"
 	"io"
 	"io/fs"
 	"log"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
-	"net/http"
 )
 
 type trans map[string]string
@@ -24,6 +25,7 @@ type tdata struct {
 	t
 	tbl        alltrans
 	lastLocale string
+	ctx        context.Context
 }
 
 var glob *tdata
@@ -103,7 +105,7 @@ func (t *tdata) locale() string {
 	return t.lastLocale
 }
 
-func (t *tdata) localeFromRequest( r *http.Request ) string {
+func (t *tdata) localeFromRequest(r *http.Request) string {
 	if len(r.Header) < 1 {
 		return "C"
 	}
@@ -112,7 +114,7 @@ func (t *tdata) localeFromRequest( r *http.Request ) string {
 		return "C"
 	}
 
-	for _, s := range strings.Split(r.Header.Get("Accept-Language"),";") {
+	for _, s := range strings.Split(r.Header.Get("Accept-Language"), ";") {
 		// TODO: Grossly inefficient and potentially wasteful and not RFC 7231 compliant
 		if t.fallback(strings.TrimSpace(s)) != "C" {
 			return t.fallback(strings.TrimSpace(s))
@@ -138,6 +140,13 @@ func (t *tdata) SetLocale(in string) string {
 	return t.lastLocale
 }
 
+func (t *tdata) Locale() string {
+	// Cache this value
+	t.lastLocale = t.fallback("C")
+
+	return t.lastLocale
+}
+
 func (t *tdata) T(in string) string {
 	l := t.locale()
 	if _, ok := t.tbl[l][in]; !ok {
@@ -154,6 +163,7 @@ func T(in string) string {
 	return in
 }
 
+// R refers to tdata.R if it can.
 func R(r *http.Request, in string) string {
 	if glob != nil {
 		return glob.R(r, in)
@@ -162,10 +172,48 @@ func R(r *http.Request, in string) string {
 	return in
 }
 
+// R infers the user's locale from the HTTP request using the tdata.localeFromRequest helper func
 func (t *tdata) R(r *http.Request, in string) string {
 	l := t.localeFromRequest(r)
 	if _, ok := t.tbl[l][in]; !ok {
 		return in
 	}
 	return t.tbl[l][in]
+}
+
+// ContextForLocale creates a new per-user context that contains a tdata struct _just for their requested locale_.
+func ContextForLocale(ctx context.Context, in string) context.Context {
+	if glob == nil {
+		return ctx
+	}
+
+	t := *glob
+	t.lastLocale = t.fallback(in)
+
+	return context.WithValue(ctx, "t.locale", &t)
+}
+
+// C calls tdata.C
+func C(ctx context.Context, in string) string {
+	td := &tdata{} // WE DO NOT NEED GLOB FOR THIS (it'll be pulled up later if needed)
+	return td.C(ctx, in)
+}
+
+// C is responsible for translating based on the locale selected by the _user_.  If none is found in the context.Value("t.locale"), it reverts to glob.
+func (t *tdata) C(ctx context.Context, in string) string {
+	tt := t.tdataFromContext(ctx)
+	if tt == nil {
+		return in
+	}
+
+	return tt.T(in)
+}
+
+func (t tdata) tdataFromContext(ctx context.Context) *tdata {
+	v := ctx.Value("t.locale")
+	if locale, ok := v.(*tdata); ok {
+		return locale
+	}
+
+	return glob
 }
