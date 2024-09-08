@@ -140,11 +140,20 @@ func (t *tdata) SetLocale(in string) string {
 	return t.lastLocale
 }
 
-func (t *tdata) Locale() string {
-	// Cache this value
-	t.lastLocale = t.fallback("C")
+func Locale() string {
+	if glob != nil {
+		return glob.Locale()
+	}
 
-	return t.lastLocale
+	return "C" // TODO this is not correct
+}
+
+func (t tdata) Locale() string {
+	if len(t.lastLocale) > 0 {
+		return t.lastLocale
+	} else {
+		return "C" // TODO this is not correct
+	}
 }
 
 func (t *tdata) T(in string) string {
