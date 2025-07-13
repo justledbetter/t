@@ -15,9 +15,9 @@ func main() {
 	log.SetFlags(0)
 
 	// Default package name is t.T.
-	t := regexp.MustCompile("t\\.T\\(\"([^\"]*?)\"\\)")
-	r := regexp.MustCompile("t\\.R\\([^\"]*\"([^\"]*?)\"\\)")
-	c := regexp.MustCompile("t\\.C\\([^\"]*\"([^\"]*?)\"\\)")
+	t := regexp.MustCompile("[^A-Za-z]*t\\.T\\(\"([^\"]*?)\"\\)")
+	r := regexp.MustCompile("[^A-Za-z]*t\\.R\\([^,]+, ?\"([^\"]*?)\"\\)")
+	c := regexp.MustCompile("[^A-Za-z]*t\\.C\\([^,]+, ?\"([^\"]*?)\"\\)")
 
 	out := make(map[string]string)
 
