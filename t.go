@@ -226,3 +226,21 @@ func (t tdata) tdataFromContext(ctx context.Context) *tdata {
 
 	return glob
 }
+
+func AddTranslations(lang string, translations trans) {
+	if glob == nil {
+		panic("no glob")
+		return
+	}
+
+	glob.AddTranslations(lang, translations)
+}
+
+// Allows the user to add "static" translations for a language (for instance, to override anything that may appear in the i18n files).
+func (t *tdata) AddTranslations(lang string, translations trans) {
+	if _, ok := t.tbl[lang]; ok {
+		for k, v := range translations {
+			t.tbl[lang][k] = v
+		}
+	}
+}
